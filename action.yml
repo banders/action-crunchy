@@ -184,6 +184,7 @@ runs:
         GH_TOKEN: ${{ inputs.gh_token || github.token }}
       run: |
         # Deploy the database
+        echo 'Deploying from action-crunchy clone'
 
         # Check if S3 inputs are provided and construct the deploy_db.sh command accordingly
         PARAMS="${{ inputs.directory }} ${VALUES_URL} ${{ github.event.repository.name }} ${RELEASE_NAME} ${{ steps.triggers.outputs.triggered}}"
