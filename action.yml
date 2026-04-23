@@ -193,6 +193,17 @@ runs:
         fi
 
         pwd
+        echo "ACTION PATH: $GITHUB_ACTION_PATH"
+        echo "WORKSPACE: $GITHUB_WORKSPACE"
+
+        echo "=== ACTION COMMIT FILES ==="
+        ls -la $GITHUB_ACTION_PATH
+
+        echo "=== ACTION YAML ==="
+        cat $GITHUB_ACTION_PATH/action.yml
+
+        echo "=== OTHER ==="
+        git -C $GITHUB_ACTION_PATH rev-parse HEAD
         ls -la ./
         ls -la ./scripts
         cat ./scripts/deploy_db.sh
