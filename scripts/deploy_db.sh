@@ -72,6 +72,7 @@ fi
 # Verify successful db deployment; wait retry 10 times with 60 seconds interval
 for i in $(seq 1 "$MAX_DB_READY_RETRIES"); do
   # Check if the 'db' instance has at least 1 ready replica
+  echo "oc get PostgresCluster/"$RELEASE_NAME"-crunchy -o json | jq -e '.status.instances[] | .readyReplicas > 0'"
   if oc get PostgresCluster/"$RELEASE_NAME"-crunchy -o json | jq -e '.status.instances[] | .readyReplicas > 0' > /dev/null 2>&1; then
     echo "Crunchy DB instance 'db' is ready."
     READY=true
