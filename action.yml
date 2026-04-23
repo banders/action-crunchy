@@ -198,6 +198,7 @@ runs:
 
         echo "=== ACTION COMMIT FILES ==="
         ls -la $GITHUB_ACTION_PATH
+        ls -la $GITHUB_ACTION_PATH/scripts
 
         echo "=== ACTION YAML ==="
         cat $GITHUB_ACTION_PATH/action.yml
@@ -209,8 +210,8 @@ runs:
         cat ./scripts/deploy_db.sh
 
         # Execute the deploy command
-        echo ./scripts/deploy_db.sh $PARAMS
-        ./scripts/deploy_db.sh $PARAMS
+        echo $GITHUB_ACTION_PATH/scripts/deploy_db.sh $PARAMS
+        $GITHUB_ACTION_PATH/scripts/deploy_db.sh $PARAMS
 
     - if: github.event_name == 'pull_request' && github.event.action != 'closed'
       shell: bash
