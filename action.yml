@@ -192,9 +192,14 @@ runs:
           PARAMS+=" ${{ inputs.s3_access_key }} ${{ inputs.s3_secret_key }} ${{ inputs.s3_bucket }} ${{ inputs.s3_endpoint }}"
         fi
 
+        pwd
+        ls -la ./
+        ls -la ./scripts
+        cat ./scripts/deploy_db.sh
+
         # Execute the deploy command
-        echo "$GITHUB_ACTION_PATH/scripts/deploy_db.sh $PARAMS"
-        "$GITHUB_ACTION_PATH/scripts/deploy_db.sh $PARAMS"
+        echo ./scripts/deploy_db.sh $PARAMS
+        ./scripts/deploy_db.sh $PARAMS
 
     - if: github.event_name == 'pull_request' && github.event.action != 'closed'
       shell: bash
