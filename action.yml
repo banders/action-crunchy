@@ -184,17 +184,12 @@ runs:
         GH_TOKEN: ${{ inputs.gh_token || github.token }}
       run: |
         # Deploy the database
-        echo 'Deploying from action-crunchy clone'
 
         # Check if S3 inputs are provided and construct the deploy_db.sh command accordingly
         PARAMS="${{ inputs.directory }} ${VALUES_URL} ${{ github.event.repository.name }} ${RELEASE_NAME} ${{ steps.triggers.outputs.triggered}}"
         if [ -n "${{ inputs.s3_access_key }}" ] && [ -n "${{ inputs.s3_secret_key }}" ] && [ -n "${{ inputs.s3_bucket }}" ] && [ -n "${{ inputs.s3_endpoint }}" ]; then
           PARAMS+=" ${{ inputs.s3_access_key }} ${{ inputs.s3_secret_key }} ${{ inputs.s3_bucket }} ${{ inputs.s3_endpoint }}"
         fi
-
-        pwd
-        echo "ACTION PATH: $GITHUB_ACTION_PATH"
-        echo "WORKSPACE: $GITHUB_WORKSPACE"
 
         # Execute the deploy command
         echo $GITHUB_ACTION_PATH/scripts/deploy_db.sh $PARAMS

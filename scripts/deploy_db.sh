@@ -25,17 +25,12 @@ echo 'Deploying crunchy helm chart'
 cd $DIRECTORY
 
 # Download values.yml file
-echo 'Preparing to download values files'
 CURL_AUTH_OPTS=()
 if [ -n "${GH_TOKEN:-}" ]; then
-  echo 'Using authorization token for download'
   CURL_AUTH_OPTS=(-H "Authorization: token ${GH_TOKEN}")
 fi
 curl "${CURL_AUTH_OPTS[@]}" -o ./values.yml "$VALUES_URL"
 echo "Downloaded values.yml (current directory: charts/crunchy)"
-
-echo 'values.yml contents:'
-cat ./values.yml
 
 # Set Helm app name
 sed -i "s/^name:.*/name: $APP_NAME/" Chart.yaml
@@ -72,7 +67,7 @@ fi
 # Verify successful db deployment; wait retry 10 times with 60 seconds interval
 for i in $(seq 1 "$MAX_DB_READY_RETRIES"); do
   # Check if the 'db' instance has at least 1 ready replica
-  if oc get PostgresCluster/"$RELEASE_NAME"-crunchy -o json | jq -e '.status.instances[] | .readyReplicas > 0' > /dev/null 2>&1; then
+  if oc get PostgresCluster/"$RELEASE_NAME"-crunchy -o json | jq -e '.status.instances[] | select(.name=="db") | .readyReplicas > 0' > /dev/null 2>&1; then
     echo "Crunchy DB instance 'db' is ready."
     READY=true
     exit 0
